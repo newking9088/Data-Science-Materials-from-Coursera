@@ -1,0 +1,184 @@
+---
+title: "Exploring the BRFSS data"
+output: 
+  html_document: 
+    fig_height: 4
+    highlight: pygments
+    theme: spacelab
+---
+
+## Setup
+
+### Load packages
+
+```{r load-packages, message = FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+### Load data
+
+Make sure your data and R Markdown files are in the same directory. When loaded
+your data file will be called `brfss2013`. Delete this note when before you submit 
+your work. 
+
+```{r load-data}
+load("brfss2013.RData")
+```
+
+
+
+* * *
+
+## Part 1: Data
+The Behavioral Risk Factor Surveillance System (BRFSS) is a collaborative project between all of the states in the United States (US) and participating US territories and the Centers for Disease Control and Prevention (CDC). The BRFSS is administered and supported by CDC’s Population Health Surveillance Branch, under the Division of Population Health at the National Center for Chronic Disease Prevention and Health Promotion. BRFSS is an ongoing surveillance system designed to measure behavioral risk factors for the non-institutionalized adult population (18 years of age and older) residing in the US. The BRFSS was initiated in 1984, with 15 states collecting surveillance data on risk behaviors through monthly telephone interviews. Over time, the number of states participating in the survey increased; by 2001, 50 states, the District of Columbia, Puerto Rico, Guam, and the US Virgin Islands were participating in the BRFSS. Today, all 50 states, the District of Columbia, Puerto Rico, and Guam collect data annually and American Samoa, Federated States of Micronesia, and Palau collect survey data over a limited point- in-time (usually one to three months). In this document, the term “state” is used to refer to all areas participating in BRFSS, including the District of Columbia, Guam, and the Commonwealth of Puerto Rico.
+
+The BRFSS objective is to collect uniform, state-specific data on preventive health practices and risk behaviors that are linked to chronic diseases, injuries, and preventable infectious diseases that affect the adult population. Factors assessed by the BRFSS in 2013 include tobacco use, HIV/AIDS knowledge and prevention, exercise, immunization, health status, healthy days — health-related quality of life, health care access, inadequate sleep, hypertension awareness, cholesterol awareness, chronic health conditions, alcohol consumption, fruits and vegetables consumption, arthritis burden, and seatbelt use. Since 2011, BRFSS conducts both landline telephone- and cellular telephone-based surveys. In conducting the BRFSS landline telephone survey, interviewers collect data from a randomly selected adult in a household. In conducting the cellular telephone version of the BRFSS questionnaire, interviewers collect data from an adult who participates by using a cellular telephone and resides in a private residence or college housing.
+
+Health characteristics estimated from the BRFSS pertain to the non-institutionalized adult population, aged 18 years or older, who reside in the US. In 2013, additional question sets were included as optional modules to provide a measure for several childhood health and wellness indicators, including asthma prevalence for people aged 17 years or younger.
+
+1) **What is this data about**?
+
+ Answer: This data is a complete survey conducted by BRFSS regarding the health status of the adult US citizens and their health related issues. This data "brfss2013" provides the data of *491775* patients and total of *330* variables are used as a metrics for evaluation. Actually, the whole population was taken into account, however, this data provides information for the US adult citizens. Hence, a sample is taken.
+
+2) **For what purpose was this data collected**?
+
+ Answer: This data is helpful for BRFSS for studying and analysing several factors that are responsible for ill-health of adult US citizens and to draw the meaningful insights from these data.
+ 
+3) **How was the data collected**:
+
+  This data is conducted through survey. The survey was taken using landline telephone and cellular telephone.
+    
+  a) *During landline telephone survey*, interviewers collected data from a randomly selected adult in a household. Disproportionate stratified sampling (DSS) has been used for the landline sample.
+    
+  b) *During cellular telephone survey*, interviewers collected data from an adult who participates by using a cellular telephone and resided in a private residence or college housing. The sample is randomly generated from a sampling frame of confirmed cellular area.
+  
+  
+### Scope of inference
+
+The "BRFSS study" is an observational study which employs stratified design based on random sampling.
+Also, the survey must be generic to all non-institutionalized adults (18 or more). This whole survey is a complete experimental study.
+
+
+* * *
+
+## Part 2: Research questions
+
+**Research quesion 1:**
+ 
+The first and foremost question is how the sleeptime affects chronic health of an US citizen especially depressive disorder for those people who usually sleep 5 hours.
+
+
+**Research quesion 2:**
+
+Next research question is whether there is any casual link between an US citizen who smokes at least 100 cigarettes have any asthma related issues, and has other types of cancers too.
+
+
+**Research quesion 3:**
+
+The next question is how mental support and genders are related. That is to see whether male get higher mental support and care than female.
+
+
+* * *
+
+## Part 3: Exploratory data analysis
+
+NOTE: Insert code chunks as needed by clicking on the "Insert a new code chunk" 
+button (green button with orange arrow) above. Make sure that your code is visible
+in the project you submit. Delete this note when before you submit your work.
+
+**Research quesion 1:**
+
+```{r}
+dim(brfss2013)
+```
+
+```{r}
+sl_dep <- brfss2013 %>%
+  filter(!is.na(sleptim1),!is.na(addepev2)) %>%
+  select(sleptim1,addepev2)
+  
+up_dep<- sl_dep %>%
+  filter(sleptim1<5) %>%
+  group_by(addepev2) %>%
+  summarise(count=n())
+up_dep
+ggplot(data=up_dep,aes(x=addepev2,y=count))+geom_bar(stat="identity",color='blue',fill='green')+xlab("Depressive Order for people having <5 hours of sleep?")+ylab("Number of US citizens ")
+```
+
+**From the bar diagram**, we can see that people not having depressive order even after having less than five hours of sleep is more than people having depressive order under same condition which is I found, quite, ***astounding***. This can visualise us an image that sleeping disorder has less influence on depression. But again, we cannot explicitly say that since it can be influenced by many other health factors.
+
+
+
+**Research quesion 2:**
+
+```{r}
+sm_ascr <- brfss2013 %>%
+  filter(!is.na(smoke100),!is.na(asthma3),!is.na(chcocncr)) %>%
+  select(smoke100,asthma3,chcocncr)
+sm_ascr<- sm_ascr %>%
+  mutate(allyes= ifelse(smoke100=="Yes"& asthma3=="Yes" & chcocncr=="Yes","Yes","No"))
+all_yes<-sm_ascr %>%
+  group_by(allyes) %>%
+  summarise(count=n())
+ggplot(data=all_yes,aes(x=allyes,y=count))+geom_bar(stat='identity')+xlab("Smoking+Asthma+Cancer")+ylab("Number of US Citizens")
+```
+
+
+From the graph, we can say that those people who had smoked at least 100 times, had asthama too, and cancer related complications **are very less** compared to those that donot have all these. From here, we can estimate that there are very, very less people who are bounded with all these critical health problems. From this, we can also guess that asthma and cancer are not really caused by smoking. But again, we can't explicitly say anything since the sample can be influenced by many factors such as habitat, financial status and many more.
+
+
+**Research quesion 3:**
+
+```{r}
+life<- brfss2013 %>%
+  filter(!is.na(lsatisfy),!is.na(emtsuprt),!is.na(cadult)) %>%
+  select(lsatisfy,emtsuprt,cadult)
+life <- life %>%
+  mutate(male= ifelse(cadult=="Yes, male respondent",1,0))
+gender_supp<- life %>%
+  filter(lsatisfy=="Very satisfied" & emtsuprt=="Always") %>%
+  group_by(male) %>%
+  summarise(count=n())
+val=c("Female","Male")
+ggplot(data=gender_supp,aes(x=male,y=count,col=val))+geom_bar(stat='identity',fill='yellow')
+```
+
+
+
+**Research quesion 3:**
+
+```{r}
+life<- brfss2013 %>%
+  filter(!is.na(lsatisfy),!is.na(emtsuprt),!is.na(cadult)) %>%
+  select(lsatisfy,emtsuprt,cadult)
+life <- life %>%
+  mutate(male= ifelse(cadult=="Yes, male respondent",1,0))
+gender_supp<- life %>%
+  filter(lsatisfy=="Very satisfied" & emtsuprt=="Always") %>%
+  group_by(male) %>%
+  summarise(count=n())
+val=c("Female","Male")
+ggplot(data=gender_supp,aes(x=male,y=count,col=val))+geom_bar(stat='identity',fill='yellow')
+```
+
+**From the bar graph**, we can clearly see that the number of males and females are approximately equal. From this visualization, we can , to a certain extent say that, male and female in US states get equal emotional support. However, this is only acceptable form for the data collected by BRFSS. It cannot be generalized to the whole population. This can be influenced by many external factors.
+
+
+**Research quesion 3:**
+
+```{r}
+life<- brfss2013 %>%
+  filter(!is.na(lsatisfy),!is.na(emtsuprt),!is.na(cadult)) %>%
+  select(lsatisfy,emtsuprt,cadult)
+life <- life %>%
+  mutate(male= ifelse(cadult=="Yes, male respondent",1,0))
+gender_supp<- life %>%
+  filter(lsatisfy=="Very satisfied" & emtsuprt=="Always") %>%
+  group_by(male) %>%
+  summarise(count=n())
+val=c("Female","Male")
+ggplot(data=gender_supp,aes(x=male,y=count,col=val))+geom_bar(stat='identity',fill='yellow')
+```
+
+**From the bar graph**, we can clearly see that the number of males and females are approximately equal. From this visualization, we can , to a certain extent say that, male and female in US states get equal emotional support. However, this is only acceptable form for the data collected by BRFSS. It cannot be generalized to the whole population. This can be an influence of many external factors.
