@@ -1,0 +1,47 @@
+2+3
+install.packages("foreign")
+library(foreign)
+pnorm(24, mean = 21, SD = 5)
+pnorm(24,21,5)
+dnorm(2,3,0.5)
+dnorm(2,3,0.51)
+dbino(2,3,0.51)
+dbinom(2,3,0.51)
+sum(dbinom(1:10,10,0.07))
+1-pnorm(49.5,44.8,32.256)
+pnorm(50, mean = 160*.28, sd = 160*.28*.72)
+1-0.56
+pnorm(50, mean = 160*.28, sd = 160*.28*.72, lower.tail = FALSE)
+install.packages('dplyr')
+install.packages('ggplot2')
+load("C:\Users\npaudel\Desktop\Intro-to-Stat-in-R\brfss2013.RData")
+load(r"C:\Users\npaudel\Desktop\Intro-to-Stat-in-R\brfss2013.RData")
+load("C:\\Users\\npaudel\\Desktop\\Intro-to-Stat-in-R\\brfss2013.RData")
+sl_dep <- brfss2013 %>%
+filter(!is.na(sleptim1),!is.na(addepev2)) %>%
+select(sleptim1,addepev2)
+library(ggplot2)
+library(dplyr)
+load("C:\\Users\\npaudel\\Desktop\\Intro-to-Stat-in-R\\brfss2013.RData")
+sl_dep <- brfss2013 %>%
+filter(!is.na(sleptim1),!is.na(addepev2)) %>%
+select(sleptim1,addepev2)
+dim(brfss2013)
+load("C:\\Users\\npaudel\\Desktop\\Intro-to-Stat-in-R\\brfss2013.RData")
+library(ggplot2)
+library(dplyr)
+load("C:\\Users\\npaudel\\Desktop\\Intro-to-Stat-in-R\\brfss2013.RData")
+setwd("C:/Users/npaudel/Desktop/Intro-to-Stat-in-R")
+load("brfss2013.RData")
+load("brfss2013.RData")
+updateR()
+install.packages('installr')
+library(installr)
+updateR()
+load("brfss2013.RData")
+dim(brfss2013)
+dim(brfss2013)
+sl_dep <- brfss2013 %>%
+filter(!is.na(sleptim1),!is.na(addepev2)) %>%
+select(sleptim1,addepev2)
+View(selected_nzes2011)
