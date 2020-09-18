@@ -8,7 +8,11 @@ As lots of people are showing great interest towards Data Science, Machine Learn
    - Applied Plotting, Charting & Data Representation in Python
    - Introduction to Data Science in Python
 
-2. Introduction to TensorFlow for Artificial Intelligence, Machine Learning, and Deep Learning
+2. DeepLearning.AI TensorFlow Developer Professional Certificate
+   - Introduction to TensorFlow for AI, ML and DL
+   - Convolutional Neural Networs (CNN) in TensorFlow
+   - Natural Language Processing in TensorFlow
+   - Sequences, TimeSeries and Prediction in TensorFlow
 
 3. Python Data Structure
 
